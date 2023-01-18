@@ -4,7 +4,9 @@
 #include <thread>
 #include <memory>
 
-size_t range_multiplier = 16;
+size_t range_start = 1<<4;
+size_t range_end = 1<<28;
+size_t range_multiplier = 1<<4;
 
 template<typename C>
 static void randomise_container(C container) {
@@ -42,7 +44,7 @@ static void no_simd_addition(benchmark::State &state) {
         }
     }
 }
-BENCHMARK(no_simd_addition<float>)->RangeMultiplier(range_multiplier)->Range(1, 1<<24);
+BENCHMARK(no_simd_addition<float>)->RangeMultiplier(range_multiplier)->Range(range_start, range_end);
 
 template<typename T>
 static void simd_addition(benchmark::State &state) {
@@ -61,7 +63,7 @@ static void simd_addition(benchmark::State &state) {
         }
     }
 }
-BENCHMARK(simd_addition<float>)->RangeMultiplier(range_multiplier)->Range(1, 1<<24);
+BENCHMARK(simd_addition<float>)->RangeMultiplier(range_multiplier)->Range(range_start, range_end);
 
 template<typename T>
 static void openmp_addition(benchmark::State &state) {
@@ -77,7 +79,7 @@ static void openmp_addition(benchmark::State &state) {
         }
     }
 }
-BENCHMARK(openmp_addition<float>)->RangeMultiplier(range_multiplier)->Range(1, 1<<24);
+BENCHMARK(openmp_addition<float>)->RangeMultiplier(range_multiplier)->Range(range_start, range_end);
 
 template<typename T>
 static void openmp_simd_addition(benchmark::State &state) {
@@ -93,7 +95,7 @@ static void openmp_simd_addition(benchmark::State &state) {
         }
     }
 }
-BENCHMARK(openmp_simd_addition<float>)->RangeMultiplier(range_multiplier)->Range(1, 1<<24);
+BENCHMARK(openmp_simd_addition<float>)->RangeMultiplier(range_multiplier)->Range(range_start, range_end);
 
 template<typename T>
 static void threaded_addition(benchmark::State &state) {
@@ -125,7 +127,7 @@ static void threaded_addition(benchmark::State &state) {
         }
     }
 }
-BENCHMARK(threaded_addition<float>)->RangeMultiplier(range_multiplier)->Range(1, 1<<24);
+BENCHMARK(threaded_addition<float>)->RangeMultiplier(range_multiplier)->Range(range_start, range_end);
 
 #include <fstream>
 static std::vector<uint32_t> compileSource(const std::string& source) {
@@ -188,6 +190,6 @@ static void kompute_addition(benchmark::State &state) {
             ->eval<kp::OpTensorSyncLocal>(params);
     }
 }
-BENCHMARK(kompute_addition<float>)->RangeMultiplier(range_multiplier)->Range(1, 1<<24);
+BENCHMARK(kompute_addition<float>)->RangeMultiplier(range_multiplier)->Range(range_start, range_end);
 
 BENCHMARK_MAIN();

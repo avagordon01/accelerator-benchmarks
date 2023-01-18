@@ -27,7 +27,12 @@ Similar projects
 ## Dependencies
 
 ```
-sudo pacman -S meson clang benchmark openmp python-matplotlib python-pandas vulkan-tools vulkan-driver vulkan-headers glslang
+sudo pacman -S \
+    cmake clang \
+    benchmark \
+    python-matplotlib python-pandas \
+    openmp \
+    vulkan-tools vulkan-driver vulkan-headers glslang
 ```
 
 ## Running

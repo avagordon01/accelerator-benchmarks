@@ -155,7 +155,7 @@ static void kompute_addition(benchmark::State &state) {
         #version 450
 
         layout(
-            local_size_x = 1,
+            local_size_x = 1024,
             local_size_y = 1,
             local_size_z = 1
         ) in;
@@ -180,7 +180,7 @@ static void kompute_addition(benchmark::State &state) {
     auto algorithm = mgr.algorithm(
         params,
         compileSource(shader),
-        kp::Workgroup{static_cast<unsigned>(state.range(0)), 1, 1}
+        kp::Workgroup{static_cast<unsigned>(state.range(0)) / 1024, 1, 1}
     );
 
     for (auto _: state) {

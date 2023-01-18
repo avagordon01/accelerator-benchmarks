@@ -183,12 +183,11 @@ static void kompute_addition(benchmark::State &state) {
         kp::Workgroup{static_cast<unsigned>(state.range(0)) / 1024, 1, 1}
     );
 
+    mgr.sequence()->eval<kp::OpTensorSyncDevice>(params);
     for (auto _: state) {
-        mgr.sequence()
-            ->record<kp::OpTensorSyncDevice>(params)
-            ->record<kp::OpAlgoDispatch>(algorithm)
-            ->eval<kp::OpTensorSyncLocal>(params);
+        mgr.sequence()->eval<kp::OpAlgoDispatch>(algorithm);
     }
+    mgr.sequence()->eval<kp::OpTensorSyncLocal>(params);
 }
 BENCHMARK(kompute_addition<float>)->RangeMultiplier(range_multiplier)->Range(range_start, range_end);
 

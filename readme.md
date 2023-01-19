@@ -32,7 +32,8 @@ sudo pacman -S \
     benchmark \
     python-matplotlib python-pandas \
     openmp \
-    vulkan-tools vulkan-driver vulkan-headers glslang
+    vulkan-tools vulkan-driver vulkan-headers glslang \
+    eigen
 ```
 
 ## Running
@@ -43,9 +44,13 @@ sudo pacman -S \
 
 ## Example
 
-Run on specific hardware, this graph answers the question in the following way:
+For O(N) vector addition on specific hardware, this graph answers the question in the following way:
 - for input size <= 2^8 floats, use CPU SIMD
 - for input size between 2^12 and 2^20 floats, use OpenMP
 - for input size >= 2^24 floats (and negligible device/host memory transfer cost) use the GPU
 
 ![](output.png)
+
+For O(N^3) matrix multiplication
+
+![](matmul.png)

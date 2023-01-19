@@ -40,3 +40,12 @@ sudo pacman -S \
 ```
 ./test.sh
 ```
+
+## Example
+
+Run on specific hardware, this graph answers the question in the following way:
+- for input size <= 2^8 floats, use CPU SIMD
+- for input size between 2^12 and 2^20 floats, use OpenMP
+- for input size >= 2^24 floats (and negligible device/host memory transfer cost) use the GPU
+
+![](output.png)

@@ -5,24 +5,44 @@ This repo tries to answer the question "for a specific input size, and (simple) 
 By implementing the same computation on all available frameworks/accelerators (CPU FPU baseline, SIMD, threads, GPU, FPGA, multi-machine, ...) and running with input sizes from 1 float to 1 billion (or more) floats, we'll see which framework is optimal for which input size.
 
 Frameworks:
-- [ ] FPU-only
-- [x] SIMD compiler auto-vectorisation
-- [ ] SIMD explicit vectorisation ([std::experimental::simd](https://en.cppreference.com/w/cpp/experimental/simd/simd)) (probably equivalent to [gcc/clang vector intrinsics](https://gcc.gnu.org/onlinedocs/gcc/Vector-Extensions.html))
-- [x] OpenMP
-- [x] [C++11 threads](https://en.cppreference.com/w/cpp/thread/thread)
-- [x] GPU compute shaders via vulkan via [kompute](https://kompute.cc/)
-- [ ] [Halide](https://halide-lang.org/)?
-- [ ] [Kokkos](https://kokkos.github.io/kokkos-core-wiki/#)?
-- FPGA?
-- multi-machine stuff?
-  - multi-machine threaded
-  - multi-machine GPU
-  - MPI
-  - `std::execution::par_unseq`
-  - https://developer.nvidia.com/blog/accelerating-standard-c-with-gpus-using-stdpar/
+- [ ] single-threaded scalar/FPU-only
+- SIMD
+  - [x] SIMD compiler auto-vectorisation
+  - [ ] SIMD explicit ([std::experimental::simd](https://en.cppreference.com/w/cpp/experimental/simd/simd)) (equivalent to [gcc/clang vector intrinsics](https://gcc.gnu.org/onlinedocs/gcc/Vector-Extensions.html))
+  - [ ] [`-fopenmp-simd` OpenMP SIMD](https://github.com/simd-everywhere/simde#openmp-4-simd)
+- threading
+  - [x] `-fopenmp` OpenMP threading
+  - [x] [C++11 threads](https://en.cppreference.com/w/cpp/thread/thread)
+  - [ ] [`std::execution::par_unseq`](https://en.cppreference.com/w/cpp/algorithm/execution_policy_tag) [clang parallel stl (pstl)](https://libcxx.llvm.org/Status/PSTL.html)
+- GPU
+  - [ ] [`-fopenmp -fopenmp-targets=nvptx64` OpenMP GPU offloading](https://enccs.github.io/openmp-gpu/target/)
+  - [x] GPU compute shaders via vulkan via [kompute](https://kompute.cc/)
+  - [ ] [Halide](https://halide-lang.org/)?
+  - [ ] [Kokkos](https://kokkos.github.io/kokkos-core-wiki/#)?
+  - [ ] [SYCL](https://en.wikipedia.org/wiki/SYCL#Implementations)
+- multi-machine
+  - [ ] [OpenMP remote offloading](https://openmp.llvm.org/design/Runtimes.html#remote-offloading-plugin)
+  - [ ] manual messaging
+  - [ ] MPI
 
 Similar projects
 - https://github.com/ashvardanian/ParallelReductionsBenchmark
+
+# Parallel Programming Ecosystem Comparison
+
+a parallel programming ecosystem needs:
+- language/language-extensions/compiler for describing parallelism, tasks, async, dependencies, etc
+- backends for SIMD, multi-core, GPU, and multi-machine
+- standard algorithms (blas, sort, reduce, etc)
+- tools for debugging and profiling
+
+| ecosystem | compiler | SIMD | Multi-core | GPU | Multi-machine | sort | reduce | blas |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| C++ STL | any (plain c++) | `std::ex::simd` | `std::thread` | `std::executors` (future) | :grey_question: asio? (future) | `std::sort` `par_unseq` | `std::ex::parallel::reduce` | `stdblas` (future) |
+| OpenMP | gcc, clang, icc (pragma extended c++) | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x: | :heavy_check_mark: | :grey_question: OpenBLAS? Eigen? |
+| sandia Kokkos | any (plain c++) | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: MPI | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: `stdblas` |
+| intel oneAPI | intel dpc++ (sycl) | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: MPI | :heavy_check_mark: TBB | :heavy_check_mark: TBB | :heavy_check_mark: MKL |
+| nvidia CUDA | clang, nvc++ (extended c++) | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: NCCL | :heavy_check_mark: thrust / libcu++ | :heavy_check_mark: thrust / libcu++ | :heavy_check_mark: cutlass / cuBLAS |
 
 ## Dependencies
 

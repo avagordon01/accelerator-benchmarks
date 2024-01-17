@@ -25,6 +25,11 @@ Frameworks:
   - [ ] manual messaging
   - [ ] MPI
 
+TODO:
+- [ ] flops/byte estimation for the two different calculations
+- [ ] flops/byte (maximum FLOPS throughput / maximum memory bandwidth) estimation for all the different hardware (CPU, SIMD, threaded, GPU, multi-machine)
+- [ ] is it possible to create a flops/byte measurement tool, and a set of stress tests to measure
+
 Similar projects
 - https://github.com/ashvardanian/ParallelReductionsBenchmark
 

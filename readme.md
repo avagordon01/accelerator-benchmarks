@@ -16,6 +16,7 @@ Frameworks:
   - [ ] [`std::execution::par_unseq`](https://en.cppreference.com/w/cpp/algorithm/execution_policy_tag) [clang parallel stl (pstl)](https://libcxx.llvm.org/Status/PSTL.html)
 - GPU
   - [ ] [`-fopenmp -fopenmp-targets=nvptx64` OpenMP GPU offloading](https://enccs.github.io/openmp-gpu/target/)
+  - [ ] [CUDA/HIP](https://llvm.org/docs/CompileCudaWithLLVM.html), HIP is a subset of CUDA that normal clang can compile to both nvidia and amd GPUs, see https://github.com/ROCm/HIP#what-is-this-repository-for and https://rocm.docs.amd.com/projects/HIP/en/latest/user_guide/faq.html. [automatic CUDA to HIP translation](https://rocm.docs.amd.com/projects/HIPIFY/en/latest/hipify-clang.html)
   - [x] GPU compute shaders via vulkan via [kompute](https://kompute.cc/)
   - [ ] [Halide](https://halide-lang.org/)?
   - [ ] [Kokkos](https://kokkos.github.io/kokkos-core-wiki/#)?
